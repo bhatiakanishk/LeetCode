@@ -1,2 +1,4 @@
 # LeetCode
-LeetCode Problems
+Practice LeetCode Problems
+
+Language: Python
