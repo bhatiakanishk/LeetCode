@@ -1,20 +1,31 @@
 from typing import List
 class Solution:
     def circularArrayLoop(self, nums: List[int]) -> bool:
-        n, visited = len(nums), set()
+        n = len(nums)        
+        def next_index(current_index):
+            return (current_index + nums[current_index]) % n
         for i in range(n):
-            if i not in visited:
-                local_s = set()
-                while True:
-                    if i in local_s: return True
-                    if i in visited: break         
-                    visited.add(i)
-                    local_s.add(i)
-                    prev, i = i, (i + nums[i]) % n
-                    if prev == i or (nums[i] > 0) != (nums[prev] > 0): break
-        return False
+            if nums[i] == 0:
+                continue
+            slow = i
+            fast = i
+            # Check if the cycle is valid (either all positive or all negative)
+            while nums[slow] * nums[next_index(slow)] > 0 and nums[fast] * nums[next_index(fast)] > 0:
+                slow = next_index(slow)
+                fast = next_index(next_index(fast))
+                if slow == fast:
+                    if slow == next_index(slow):
+                        break  # Cycle of size 1, ignore it
+                    return True  # Found a valid cycle
+            # Mark the current cycle as invalid
+            slow = i
+            while nums[slow] * nums[next_index(slow)] > 0:
+                tmp = next_index(slow)
+                nums[slow] = 0  # Mark the current index as visited
+                slow = tmp
+        return False  # No valid cycle found
 
 """
-Time Complexity: O(n^2)
-Space Complexity: O(n)
+Time Complexity: O(n)
+Space Complexity: O(1)
 """
