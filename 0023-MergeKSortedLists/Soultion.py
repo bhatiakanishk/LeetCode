@@ -38,3 +38,10 @@ class Solution:
         
         # Return the merged sorted linked list (excluding the dummy head).
         return merged_head.next
+
+"""
+n: Total number of nodes
+k: Number of linked lists
+Time Complexity: O(n*log(k))
+Space Complexity: O(k)
+"""
