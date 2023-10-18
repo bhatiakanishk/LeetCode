@@ -1,0 +1,46 @@
+Given an integer array nums, return the length of the longest strictly increasing subsequence.
+
+A subsequence is an array that can be derived from another array by deleting some or no elements without changing the order of the remaining elements.
+
+Example 1:
+Input: nums = [10,9,2,5,3,7,101,18]
+Output: 4
+Explanation: The longest increasing subsequence is [2,3,7,101], therefore the length is 4.
+
+Example 2:
+Input: nums = [0,1,0,3,2,3]
+Output: 4
+
+Example 3:
+Input: nums = [7,7,7,7,7,7,7]
+Output: 1
+
+Constraints:
+
+1 <= nums.length <= 2500
+-104 <= nums[i] <= 104
+
+Follow up: Can you come up with an algorithm that runs in O(n log(n)) time complexity?
+
+from typing import List
+import bisect
+
+class Solution:
+    def lengthOfLIS(self, nums: List[int]) -> int:
+        tails = []
+        
+        for num in nums:
+            # Use binary search to find the index at which the number should be inserted
+            # to keep tails sorted.
+            idx = bisect.bisect_left(tails, num)
+            
+            # If num is greater than all elements in tails, append it.
+            if idx == len(tails):
+                tails.append(num)
+            else:
+                # Replace the found index with num. This does not increase the length of tails,
+                # but it might replace the ending element of an increasing subsequence 
+                # of certain length with a smaller value, which might be useful later.
+                tails[idx] = num
+        
+        return len(tails)
